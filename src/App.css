@@ -1,38 +1,306 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background: rgb(255, 241, 215);
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  position: absolute;
+  overflow: auto;
+  scroll-snap-type: y mandatory;
+  color: rgb(160, 86, 17);
+
+}
+
+@import url(https://fonts.googleapis.com/css?family=Bangers:regular);
+
+.alt-font {
+  font-family: 'Bangers';
+}
+
+header>h1 {
+  letter-spacing: 0.1rem;
+  box-shadow: 7px 7px black;
+  border-right: 15px solid rgb(173, 84, 0);
+  border-bottom: 15px solid rgb(173, 84, 0);
+  border-left: 2px solid rgb(173, 84, 0);
+  border-top: 2px solid rgb(173, 84, 0);
+  border-left: 2px solid rgb(173, 84, 0);
+  background-color: rgba(255, 255, 255, 0.418);
+  width: 30vw;
+  min-width: 250px;
+  padding: 1rem;
+  clip-path: polygon(0% 0%, 97.5% 0%, 100% 18%, 100% 100%, 6% 100%, 0% 86%);
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) scale(1.2);
+
+}
+
+header {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  scroll-snap-align: start;
+}
+
+#socials {
+  width: 30vw;
+  min-width: 190px;
+  height: 10%;
+  margin: auto;
+  transform: translateY(100%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 1rem;
+}
+
+#socials a img {
+  opacity: 0.7;
+  transition: 0.3s all ease;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+#socials img:hover {
+  opacity: 1;
+}
+
+.article {
+  border-right: 10px solid rgb(119, 57, 0);
+  border-bottom: 15px solid rgb(173, 84, 0);
+  border-left: 2px solid rgb(173, 84, 0);
+  border-top: 2px solid rgb(173, 84, 0);
+  border-left: 2px solid rgb(173, 84, 0);
+  color: rgb(160, 86, 17);
+  background-color: rgba(255, 255, 255, 0.418);
+  width: 75vw;
+  padding: 2rem;
+  clip-path: polygon(0% 0%, 99.2% 0%, 100% 1.4rem, 100% 100%, 2% 100%, 0% calc(100% - 0.7rem));
+  text-align: justify;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-margin-top: 2rem;
+
+}
+
+article {
+  margin: 2rem auto;
+  transition: 0.2s ease height;
+  height: fit-content;
+  min-height: 15rem;
+
+}
+
+main {
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+  min-height: 100%;
+  top: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  scroll-padding-top: 2rem;
+  scroll-margin: 2rem;
+}
+
+.spaced-letters {
+  letter-spacing: 0.35rem;
+  font-weight: 800;
+}
+
+#most-recent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#most-recent.closed .text-blocks {
+  width: 70%;
+  padding: 0rem 1rem;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 0.2fr 0.5fr 2fr auto;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+#most-recent.open .text-blocks {
+  width: 70%;
+  padding: 0rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.text-blocks>p :first-of-type {
+  margin: 0;
+  line-height: 0rem;
+  font-size: smaller;
+  /* margin-block: 0.5rem; */
+
+}
+
+.text-blocks>p :nth-of-type(2) {
+  margin: 0;
+}
+
+h2 {
+  line-height: 0rem;
+  margin: 0;
+  margin-block: 0;
+}
+
+#most-recent .article-image-wrapper {
+  width: 25%;
+  border-radius: 0.5rem;
+  border: inset 5px rgb(210, 103, 2);
+  overflow: hidden;
+  z-index: 10;
+  position: relative;
+  box-shadow: 0px 0px 3px 1px black;
+}
+
+#most-recent .article-image-wrapper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  position: absolute;
+}
+
+.article-image-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0px 0 15px 10px rgb(0, 0, 0);
+  z-index: 5;
+  /* Place the pseudo-element behind the image */
+}
+
+button {
+  /* outline: none; */
+  color: inherit;
+  margin: 0.5rem 1rem;
+  background-color: rgba(245, 222, 179, 0.343);
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border: none;
+  border: 1px solid rgb(146, 70, 0) !important;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+  transition: 0.2s ease all;
+}
+
+button:hover {
+  background-color: rgb(169, 82, 0);
   color: white;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.59);
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.letter-space-1 {
+  letter-spacing: 0.2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.external-links-wrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.external-links,
+.external-links:visited {
+  background-color: rgb(169, 82, 0);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  margin: 0.1rem;
+  transform: skew(-12deg);
+  border-bottom: 2px solid orange;
+  border-right: 2px solid orange;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+  font-weight: 600;
+  transition: 0.2s ease all;
+  box-sizing: border-box;
+
+}
+
+.external-links:hover {
+  border-top: 2px solid orange;
+  border-left: 2px solid orange;
+  border-bottom: 2px solid rgb(118, 77, 0);
+  border-right: 2px solid rgb(118, 77, 0);
+  border-radius: 0.6rem;
+
+}
+
+@media screen and (max-width: 850px) {
+  #most-recent {
+    flex-direction: column;
+    width: 75%;
   }
-  to {
-    transform: rotate(360deg);
+  section {
+    width: 100%;
+
   }
+  #most-recent.closed .text-blocks, #most-recent.open .text-blocks {
+    width: 100%;
+    padding: 0;
+  }
+  h2 {
+    font-size: large;
+  }
+  .external-links {
+    font-size: x-small;
+  }
+  #most-recent .article-image-wrapper {
+    width: 100%;
+    height: 10rem;
+    position: relative;
+  }
+#socials {
+  transform: translateY(200%);
+  min-width: 250px;
+  width: 50%;
+}
+}
+
+#fold-article-button {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  display: block;
+  border-radius: 50%;
+  background-color: rgba(119, 58, 0, 0.815);
+  box-shadow: 1px 1px 0px 0px rgba(255, 166, 0, 0.82);
+  border: 2px solid rgba(255, 166, 0, 0.862);
+  font-size: 2.5rem;
+  z-index: 10;
+  color: rgba(255, 166, 0, 0.817);
+  opacity: 0.8;
+  cursor: pointer;
+}
+#fold-article-button:hover {
+  opacity: 1;
 }
