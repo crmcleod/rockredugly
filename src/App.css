@@ -61,8 +61,14 @@ header {
   flex-direction: row;
   justify-content: space-evenly;
   padding: 1rem;
+  position: relative;
 }
 
+#socials a{
+  width: 33%;
+  max-width: 90px;
+  height: fit-content;
+}
 #socials a img {
   opacity: 0.7;
   transition: 0.3s all ease;
@@ -280,7 +286,8 @@ button:hover {
 #socials {
   transform: translateY(200%);
   min-width: 250px;
-  width: 50%;
+  width: 80%;
+  max-width: 350px;
 }
 }
 
@@ -300,7 +307,15 @@ button:hover {
   color: rgba(255, 166, 0, 0.817);
   opacity: 0.8;
   cursor: pointer;
+  transform: translate(-5%, -5%);
+  
 }
 #fold-article-button:hover {
   opacity: 1;
+}
+
+#fold-article-button:active {
+  box-shadow: 0px 0px 2px 0px black;
+  transform: scale(0.95) translate(0%, 0%);
+
 }
