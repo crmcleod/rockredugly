@@ -1,86 +1,59 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import github from './github-mark.png'
-import ln from './In-Blue-128.png'
-import cio from './cragglio.png'
+
 import axios from 'axios'
+import { LandingContainer } from './Landing/LandingContainer';
+import FoldArticleButton from './Articles/FoldArticleButton';
+import { ExternalLinksContainer } from './Articles/ExternalLinksContainer';
+import { ReadOnButton } from './Articles/ReadOnButton';
 const parser = new DOMParser()
 
 
 function App() {
 
   useEffect(() => {
-
     axios.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_space_id}/environments/master/entries?access_token=${process.env.REACT_APP_access_token}`)
       .then(x => setArticles(x.data))
-
   }, [])
 
-  const [read, setRead] = useState(null)
+  const [articleOpenIndex, setArticleOpenIndex] = useState(null)
   const [articles, setArticles] = useState(null)
+
   return (
     <div className="App">
-      <header>
-        <h1 className='alt-font'>RockRedUgly Blog</h1>
-        <div id='socials'>
-          <a href='https://github.com/crmcleod'>
-            <img src={github} alt="github logo" />
-          </a>
-          <a href='https://www.linkedin.com/in/craig-r-mcleod/'>
-            <img src={ln} alt="linkedin logo" />
-          </a>
-          <a href='https://craggl.io'>
-            <img src={cio} alt="craggl.io logo" />
-          </a>
-        </div>
-      </header>
+      <LandingContainer />
       <main>
         <section>
-        {read !== null && <div id='fold-article-button' onClick={() => {setRead(null)}}>ⓧ</div>}
-        {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((x, i) => {
+          <FoldArticleButton articleOpenIndex={articleOpenIndex} setArticleOpenIndex={setArticleOpenIndex} />
+          {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
             return (
 
-              <article id='most-recent' className={`article ${read === i ? 'open' : 'closed'} ${x?.metadata.tags.some(z => z.sys.id === 'featured') ? '' : 'other-articles'}`}>
+              <article id='regular-article' className={`article ${articleOpenIndex === i ? 'open' : 'closed'} ${article?.metadata.tags.some(z => z.sys.id === 'featured') ? '' : 'other-articles'}`}>
                 <div className='article-image-wrapper'>
-                  <img alt="" className='article-image' src={`https:${articles.includes.Asset.find(y => y.sys.id === x.fields.image.sys.id).fields.file.url}`} />
+                  <img alt="" className='article-image' src={`https:${articles.includes.Asset.find(y => y.sys.id === article.fields.image.sys.id).fields.file.url}`} />
                 </div>
                 <div className='text-blocks'>
                   <h2 className='alt-font'>
-                    {x?.fields?.articleHeader}
+                    {article?.fields?.articleHeader}
                   </h2>
                   <p className='published-date'>
-                    <b>Published</b> {new Date(x?.fields?.publishedDate).toLocaleDateString()}
+                    <b>Published</b> {new Date(article?.fields?.publishedDate).toLocaleDateString()}
                   </p>
-                  {read === i ?
+                  {articleOpenIndex === i ?
                     <>
-                      {[...parser.parseFromString(x?.fields?.fullArticle, 'text/html').body.children].map(x => {
+                      {[...parser.parseFromString(article?.fields?.fullArticle, 'text/html').body.children].map(x => {
                         return <p>
                           {x.textContent}
                         </p>
                       })}
-                      {
-                        <div className='external-links-wrapper'>
-                          {x?.fields?.links?.map(x => {
-                            return <a className='external-links' href={x}>{x}</a>
-                          })}
-                        </div>
-                      }
+                      {<ExternalLinksContainer article={article} />}
                     </>
                     :
                     <>
-                      <p><i>
-                        {x?.fields?.blurb}
-                      </i>
+                      <p>
+                        <i> {article?.fields?.blurb} </i>
                       </p>
-                      <button className='alt-font letter-space-1' onClick={(e) => {
-                        setRead(i)
-                        const parent = e.target.parentNode.parentNode
-                        if(parent) {
-                          setTimeout(() => parent.scrollIntoView({behavior: 'instant', block: 'start'}), 50)
-                        }
-                        }}>
-                        Read on
-                      </button>
+                      <ReadOnButton setArticleOpenIndex={setArticleOpenIndex} i={i} />
                     </>
                   }
                 </div>
