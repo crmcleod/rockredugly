@@ -1,11 +1,12 @@
-export const ReadOnButton = ({setArticleOpenIndex, i}) => {
+export const ReadOnButton = ({setArticleOpenID, id}) => {
     return(
         <button className='alt-font letter-space-1' onClick={(e) => {
-            setArticleOpenIndex(i)
+            setArticleOpenID(id)
             const parent = e.target.parentNode.parentNode
             if (parent) {
-              setTimeout(() => parent.scrollIntoView({ behavior: 'instant', block: 'start' }), 50)
-            }
+              console.log('scroll parent block')
+              document.querySelector('.regular-article' + id)
+              .scrollIntoView({ behavior: 'instant', block: 'start' }, 100)            }
           }}>
             Read on
           </button>

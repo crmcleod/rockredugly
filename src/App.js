@@ -8,26 +8,48 @@ import { ArticleContainer } from './Articles/ArticleContainer';
 
 
 function App() {
+  const [articleOpenID, setArticleOpenID] = useState(null)
+  const [articles, setArticles] = useState(null)
 
   useEffect(() => {
     axios.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_space_id}/environments/master/entries?access_token=${process.env.REACT_APP_access_token}&metadata.tags.sys.id[all]=${process.env.REACT_APP_content_tag}`)
-      .then(x => setArticles(x.data))
+      .then(x => {
+        const incomingArticles = x.data
+        const currentUrl = window.location.href.split('/').pop()
+
+        if (currentUrl) {
+          incomingArticles.items.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).forEach((curr) => {
+            if (curr.sys.id === currentUrl) {
+              setArticleOpenID(curr.sys.id)
+              scrollLinkedArticleIntoView(curr)
+            }
+          })
+        }
+        setArticles(incomingArticles)
+      })
   }, [])
 
-  const [articleOpenIndex, setArticleOpenIndex] = useState(null)
-  const [articles, setArticles] = useState(null)
+  const scrollLinkedArticleIntoView = (article) => {
+    setTimeout(() => {
+      document.querySelector('.regular-article' + article.sys.id)
+        .scrollIntoView({ behavior: 'instant', block: 'start' }, 100)
+    })
+  }
+
+
 
   return (
     <div className="App">
       <LandingContainer />
       <main>
         <section>
-          <FoldArticleButton articleOpenIndex={articleOpenIndex} setArticleOpenIndex={setArticleOpenIndex} />
+          <FoldArticleButton articleOpenID={articleOpenID} setArticleOpenID={setArticleOpenID} />
           {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
             return (
               <ArticleContainer
-                articleOpenIndex={articleOpenIndex}
-                setArticleOpenIndex={setArticleOpenIndex}
+                key={article.sys.id + articleOpenID}
+                articleOpenID={articleOpenID}
+                setArticleOpenID={setArticleOpenID}
                 i={i}
                 article={article}
                 articles={articles}

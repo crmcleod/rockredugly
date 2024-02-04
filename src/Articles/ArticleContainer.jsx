@@ -6,16 +6,16 @@ import { ExternalLinksContainer } from "./ExternalLinksContainer"
 import { PublishedDate } from "./PublishedDate"
 import { ReadOnButton } from "./ReadOnButton"
 
-export const ArticleContainer = ({ articleOpenIndex, setArticleOpenIndex, i, article, articles }) => {
+export const ArticleContainer = ({ articleOpenID, setArticleOpenID, i, article, articles }) => {
     return (
-        <Article articleOpenIndex={articleOpenIndex} i={i} article={article} >
+        <Article articleOpenID={articleOpenID} i={i} article={article} >
             <ArticleImage article={article} articles={articles} />
             <ArticleTextBlocks>
                 <h2 className='alt-font'>
                     {article?.fields?.articleHeader}
                 </h2>
                 <PublishedDate article={article} />
-                {articleOpenIndex === i ?
+                {articleOpenID === article.sys.id ?
                     <>
                         <ArticleParagraphs article={article} />
                         <ExternalLinksContainer article={article} />
@@ -23,7 +23,7 @@ export const ArticleContainer = ({ articleOpenIndex, setArticleOpenIndex, i, art
                     :
                     <>
                         <p><i> {article?.fields?.blurb} </i></p>
-                        <ReadOnButton setArticleOpenIndex={setArticleOpenIndex} i={i} />
+                        <ReadOnButton setArticleOpenID={setArticleOpenID} id={article.sys.id} />
                     </>
                 }
             </ArticleTextBlocks>

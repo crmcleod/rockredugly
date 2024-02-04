@@ -1,9 +1,9 @@
 import React from 'react';
 
-const FoldArticleButton = ({ articleOpenIndex, setArticleOpenIndex }) => {
+const FoldArticleButton = ({ articleOpenID, setArticleOpenID }) => {
   return (
-    articleOpenIndex !== null && (
-      <div id='fold-article-button' onClick={() => setArticleOpenIndex(null)}>
+    articleOpenID !== null && (
+      <div id='fold-article-button' onClick={() => setArticleOpenID(null)}>
         ⓧ
       </div>
     )
