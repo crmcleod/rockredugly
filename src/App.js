@@ -10,7 +10,7 @@ import { ArticleContainer } from './Articles/ArticleContainer';
 function App() {
 
   useEffect(() => {
-    axios.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_space_id}/environments/master/entries?access_token=${process.env.REACT_APP_access_token}`)
+    axios.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_space_id}/environments/master/entries?access_token=${process.env.REACT_APP_access_token}&metadata.tags.sys.id[all]=${process.env.REACT_APP_content_tag}`)
       .then(x => setArticles(x.data))
   }, [])
 
