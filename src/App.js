@@ -5,14 +5,28 @@ import axios from 'axios'
 import { LandingContainer } from './Landing/LandingContainer';
 import FoldArticleButton from './Articles/FoldArticleButton';
 import { ArticleContainer } from './Articles/ArticleContainer';
+import { Notification } from './Notifications/Notification';
 
 
 function App() {
   const [articleOpenID, setArticleOpenID] = useState(null)
   const [articles, setArticles] = useState(null)
+  const [notification, setNotification] = useState(false)
+  const [fade, setFade] = useState(false)
 
   useEffect(() => {
-    axios.post(`https://discord.com/api/webhooks/${process.env.REACT_APP_channel_id}/${process.env.REACT_APP_channel_key}`, {"content": `${new Date()}`})
+    if (notification) {
+      setTimeout(() => {
+        setFade(true)
+        setTimeout(() => {
+          setNotification(false)
+        }, 2000)
+      }, 2000);
+    }
+  }, [notification])
+
+  useEffect(() => {
+    axios.post(`https://discord.com/api/webhooks/${process.env.REACT_APP_channel_id}/${process.env.REACT_APP_channel_key}`, { "content": `${new Date()}` })
     axios.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_space_id}/environments/master/entries?access_token=${process.env.REACT_APP_access_token}&metadata.tags.sys.id[all]=${process.env.REACT_APP_content_tag}`)
       .then(x => {
         const incomingArticles = x.data
@@ -41,6 +55,7 @@ function App() {
 
   return (
     <div className="App">
+      {notification && <Notification fade={fade}/>}      
       <LandingContainer />
       <main>
         <section>
@@ -48,12 +63,14 @@ function App() {
           {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
             return (
               <ArticleContainer
+                setNotification={setNotification}
                 key={article.sys.id + articleOpenID}
                 articleOpenID={articleOpenID}
                 setArticleOpenID={setArticleOpenID}
                 i={i}
                 article={article}
                 articles={articles}
+                setFade={setFade}
               />
             )
           })}

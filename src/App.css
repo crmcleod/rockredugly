@@ -262,6 +262,11 @@ button:hover {
 }
 
 @media screen and (max-width: 850px) {
+  .share-icon {
+    width: 70%;
+    opacity: 0.6;
+    transform: translateY(0%) !important;
+  }
   #regular-article {
     flex-direction: column;
     width: 75%;
@@ -328,4 +333,35 @@ button:hover {
   box-shadow: 0px 0px 2px 0px black;
   transform: scale(0.95) translate(0%, 0%);
 
+}
+
+.share-icon {
+  width: 70%;
+  opacity: 0.6;
+  transform: translateY(-30%);
+}
+.share-icon:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.notification-wrapper {
+  position: fixed;
+  top: 5rem;
+  width: 80%;
+  padding: 2rem 3rem;
+  margin: auto;
+  background-color: rgba(195, 111, 0, 0.916);
+  color: white;
+  font-weight: 600;
+  font-family: inherit;
+  z-index: 1000;
+  display: block;
+  border-radius: 1rem;
+  transition: 1s ease;
+  opacity: 1;
+}
+
+.fade {
+  opacity: 0;
 }
