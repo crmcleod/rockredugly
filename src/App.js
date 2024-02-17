@@ -52,7 +52,6 @@ function App() {
   }
 
 
-
   return (
     <div className="App">
       {notification && <Notification fade={fade}/>}      

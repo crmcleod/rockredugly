@@ -312,7 +312,10 @@ button:hover {
   right: 2rem;
   width: 3rem;
   height: 3rem;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   border-radius: 50%;
   background-color: rgba(119, 58, 0, 0.815);
   box-shadow: 1px 1px 0px 0px rgba(255, 166, 0, 0.82);
