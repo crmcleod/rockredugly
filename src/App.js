@@ -46,37 +46,63 @@ function App() {
 
   const scrollLinkedArticleIntoView = (article) => {
     setTimeout(() => {
-      document.querySelector('.regular-article' + article.sys.id)
-        .scrollIntoView({ behavior: 'instant', block: 'start' }, 100)
+      document.querySelector('.regular-article' + (article?.sys?.id ?? article))
+        .scrollIntoView({ behavior: 'instant', block: 'start' }
+          , 100)
     })
   }
 
+  const closeArticleAndSnapBackToTop = (article) => {
+    const element = document.querySelector('.regular-article' + article);
+    if (element.getBoundingClientRect().bottom > 0) {
+      scrollLinkedArticleIntoView(article)
+    }
+    setArticleOpenID(null)
+  }
 
-  return (
-    <div className="App">
-      {notification && <Notification fade={fade}/>}      
-      <LandingContainer />
-      <main>
-        <section>
-          <FoldArticleButton articleOpenID={articleOpenID} setArticleOpenID={setArticleOpenID} />
-          {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
-            return (
-              <ArticleContainer
-                setNotification={setNotification}
-                key={article.sys.id + articleOpenID}
-                articleOpenID={articleOpenID}
-                setArticleOpenID={setArticleOpenID}
-                i={i}
-                article={article}
-                articles={articles}
-                setFade={setFade}
-              />
-            )
-          })}
-        </section>
-      </main >
-    </div >
-  );
-}
+  /* the dreaded commented out code of something that doesn't work the way I want...
+      - designed to work with onScroll on main element 
+      -  when open article is scrolled out of view snap to top of next.
+  */
+  const checkOpenArticles = () => {
+    if (articleOpenID) {
+      var element = document.querySelector('.regular-article' + articleOpenID);
+      if (element.getBoundingClientRect().bottom < 0) {
+        setTimeout(() => {
+          setArticleOpenID(null)
+          element = document.querySelector('.regular-article' + articleOpenID);
+          const next = element.nextElementSibling
+          next.scrollIntoView({ behavior: 'instant', block: 'start' })
+        }, 50)
+      }
+    }
+  }
 
-export default App;
+    return (
+      <div className="App" onScroll={checkOpenArticles}>
+        {notification && <Notification fade={fade} />}
+        <LandingContainer />
+        <main>
+          <section>
+            <FoldArticleButton articleOpenID={articleOpenID} closeArticleAndSnapBackToTop={closeArticleAndSnapBackToTop} />
+            {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
+              return (
+                <ArticleContainer
+                  setNotification={setNotification}
+                  key={article.sys.id + articleOpenID}
+                  articleOpenID={articleOpenID}
+                  setArticleOpenID={setArticleOpenID}
+                  i={i}
+                  article={article}
+                  articles={articles}
+                  setFade={setFade}
+                />
+              )
+            })}
+          </section>
+        </main >
+      </div >
+    );
+  }
+
+  export default App;

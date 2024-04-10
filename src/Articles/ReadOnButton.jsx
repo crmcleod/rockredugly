@@ -6,7 +6,7 @@ export const ReadOnButton = ({ setArticleOpenID, id }) => {
       if (parent) {
         setTimeout(() => {
           document.querySelector('.regular-article' + id)
-            .scrollIntoView({ behavior: 'instant', block: 'start' })
+            .scrollIntoView({ behavior: 'smooth', block: 'start' })
         }, 50)
       }
     }

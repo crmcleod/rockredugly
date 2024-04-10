@@ -13,7 +13,7 @@ export const LandingContainer = () => {
     
       return (
         <header>
-          <h1 className='alt-font'>RockRedUgly Blog</h1>
+          <h1 className='alt-font'>RockRedUgly</h1>
           <div id='socials'>
             {links.map((link, index) => (
               <SocialLinks key={index} {...link} />
