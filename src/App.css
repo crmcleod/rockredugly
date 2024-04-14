@@ -254,7 +254,9 @@ button:hover {
   border-left: 2px solid transparent;
   font-weight: 600;
   transition: 0.2s ease all;
-  box-sizing: border-box;
+  box-sizing: content-box;
+  width: 95%;
+  word-wrap: break-word;
 
 }
 
@@ -328,6 +330,7 @@ button:hover {
   opacity: 0.8;
   cursor: pointer;
   transform: translate(-5%, -5%);
+  box-sizing: content-box;
   
 }
 #fold-article-button:hover {
