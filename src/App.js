@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 
 import axios from 'axios'
@@ -42,6 +42,7 @@ function App() {
         }
         setArticles(incomingArticles)
       })
+    console.log(window.navigator.userAgent)
   }, [])
 
   const scrollLinkedArticleIntoView = (article) => {
@@ -60,49 +61,66 @@ function App() {
     setArticleOpenID(null)
   }
 
-  /* the dreaded commented out code of something that doesn't work the way I want...
-      - designed to work with onScroll on main element 
-      -  when open article is scrolled out of view snap to top of next.
-  */
-  const checkOpenArticles = () => {
-    if (articleOpenID) {
-      var element = document.querySelector('.regular-article' + articleOpenID);
-      if (element.getBoundingClientRect().bottom < 0) {
-        setTimeout(() => {
-          setArticleOpenID(null)
-          element = document.querySelector('.regular-article' + articleOpenID);
-          const next = element.nextElementSibling
-          next.scrollIntoView({ behavior: 'instant', block: 'start' }, 50)
-        }, 50)
+  const debounce = (func, delay) => {
+    let timeoutId;
+
+    return function () {
+      const context = this;
+      const args = arguments;
+
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func.apply(context, args);
+      }, delay);
+    };
+  }
+
+
+  const checkOpenArticles = useCallback(() => {
+    const debouncedCheckOpenArticles = debounce(() => {
+      if (articleOpenID) {
+        const element = document.querySelector('.regular-article' + articleOpenID);
+        if (element && element.getBoundingClientRect().bottom < 0) {
+          setArticleOpenID(null);
+          setTimeout(() => {
+            const next = element.nextElementSibling;
+            if (next) {
+              next.scrollIntoView({ behavior: 'instant', block: 'start' });
+            }
+          }, 100);
+        }
       }
-    }
-  }
+    }, 500);
 
-    return (
-      <div className="App" onScroll={checkOpenArticles}>
-        {notification && <Notification fade={fade} />}
-        <LandingContainer />
-        <main>
-          <section>
-            <FoldArticleButton articleOpenID={articleOpenID} closeArticleAndSnapBackToTop={closeArticleAndSnapBackToTop} />
-            {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
-              return (
-                <ArticleContainer
-                  setNotification={setNotification}
-                  key={article.sys.id + articleOpenID}
-                  articleOpenID={articleOpenID}
-                  setArticleOpenID={setArticleOpenID}
-                  i={i}
-                  article={article}
-                  articles={articles}
-                  setFade={setFade}
-                />
-              )
-            })}
-          </section>
-        </main >
-      </div >
-    );
-  }
+    debouncedCheckOpenArticles();
+  }, [articleOpenID]);
 
-  export default App;
+
+  return (
+    <div className="App" onScroll={checkOpenArticles}>
+      {notification && <Notification fade={fade} />}
+      <LandingContainer />
+      <main>
+        <section>
+          <FoldArticleButton articleOpenID={articleOpenID} closeArticleAndSnapBackToTop={closeArticleAndSnapBackToTop} />
+          {articles && articles?.items?.sort((a, b) => new Date(b.fields.publishedDate).getTime() - new Date(a.fields.publishedDate).getTime()).map((article, i) => {
+            return (
+              <ArticleContainer
+                setNotification={setNotification}
+                key={article.sys.id + articleOpenID}
+                articleOpenID={articleOpenID}
+                setArticleOpenID={setArticleOpenID}
+                i={i}
+                article={article}
+                articles={articles}
+                setFade={setFade}
+              />
+            )
+          })}
+        </section>
+      </main >
+    </div >
+  );
+}
+
+export default App;
