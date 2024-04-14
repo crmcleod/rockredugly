@@ -72,7 +72,7 @@ function App() {
           setArticleOpenID(null)
           element = document.querySelector('.regular-article' + articleOpenID);
           const next = element.nextElementSibling
-          next.scrollIntoView({ behavior: 'instant', block: 'start' })
+          next.scrollIntoView({ behavior: 'instant', block: 'start' }, 50)
         }, 50)
       }
     }
