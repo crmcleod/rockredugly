@@ -87,10 +87,10 @@ function App() {
             if (next) {
               next.scrollIntoView({ behavior: 'instant', block: 'start' });
             }
-          }, 100);
+          }, 50);
         }
       }
-    }, 500);
+    }, 300);
 
     debouncedCheckOpenArticles();
   }, [articleOpenID]);
