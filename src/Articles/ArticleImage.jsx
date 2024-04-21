@@ -4,7 +4,8 @@ export const ArticleImage = ({ article, articles, placeHolderImg }) => {
 
     const [imgLoaded, setImgLoaded] = useState(false)
 
-    let imgSrc = `https:${articles.includes.Asset.find(y => y.sys.id === article.fields.image.sys.id).fields.file.url}`
+    let foundImg = articles.includes.Asset.find(y => y.sys.id === article.fields.image.sys.id);
+    let imgSrc = `https:${foundImg.fields.file.url}`;
 
     useEffect(() => {
         const img = new Image();
@@ -18,7 +19,7 @@ export const ArticleImage = ({ article, articles, placeHolderImg }) => {
         <div className='article-image-wrapper'>
             {!imgLoaded && <img alt="" className='article-image' src={placeHolderImg} />}
             <img
-            alt=""
+                alt=""
                 src={imgSrc}
                 style={{ display: imgLoaded ? 'block' : 'none' }}
             />
