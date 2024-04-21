@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import './App.css';
+import waiting from './Assets/waiting.png'
 
 import axios from 'axios'
 import { LandingContainer } from './Landing/LandingContainer';
 import FoldArticleButton from './Articles/FoldArticleButton';
 import { ArticleContainer } from './Articles/ArticleContainer';
 import { Notification } from './Notifications/Notification';
+import ImgLoader from './Helpers/ImgLoader';
 
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
   }, [notification])
 
   useEffect(() => {
-   (!process.env.REACT_APP_local && axios.post(`https://discord.com/api/webhooks/${process.env.REACT_APP_channel_id}/${process.env.REACT_APP_channel_key}`, { "content": `${new Date()}` }))
+    (!(process.env.NODE_ENV === 'development') && axios.post(`https://discord.com/api/webhooks/${process.env.REACT_APP_channel_id}/${process.env.REACT_APP_channel_key}`, { "content": `${new Date()}` }))
     axios.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_space_id}/environments/master/entries?access_token=${process.env.REACT_APP_access_token}&metadata.tags.sys.id[all]=${process.env.REACT_APP_content_tag}`)
       .then(x => {
         const incomingArticles = x.data
@@ -98,6 +100,7 @@ function App() {
 
   return (
     <div className="App" onScroll={checkOpenArticles}>
+      <ImgLoader imageUrls={[waiting]} />
       {notification && <Notification fade={fade} />}
       <LandingContainer />
       <main>
@@ -114,6 +117,7 @@ function App() {
                 article={article}
                 articles={articles}
                 setFade={setFade}
+                placeHolderImg={waiting}
               />
             )
           })}

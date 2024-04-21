@@ -7,7 +7,7 @@ import { PublishedDate } from "./PublishedDate"
 import { ReadOnButton } from "./ReadOnButton"
 import share from '../Assets/share.png'
 
-export const ArticleContainer = ({ articleOpenID, setArticleOpenID, i, article, articles, setNotification, setFade }) => {
+export const ArticleContainer = ({ articleOpenID, setArticleOpenID, i, article, articles, setNotification, setFade, placeHolderImg }) => {
 
     const handleReadOnClick = () => {
         setFade(false)
@@ -17,7 +17,7 @@ export const ArticleContainer = ({ articleOpenID, setArticleOpenID, i, article, 
     
     return (
         <Article articleOpenID={articleOpenID} i={i} article={article} >
-            <ArticleImage article={article} articles={articles} />
+            <ArticleImage article={article} articles={articles} placeHolderImg={placeHolderImg}/>
             <ArticleTextBlocks>
                 <h2 className='alt-font'>
                     {article?.fields?.articleHeader}
@@ -26,7 +26,7 @@ export const ArticleContainer = ({ articleOpenID, setArticleOpenID, i, article, 
                     <PublishedDate article={article} />
                 {
                     articleOpenID === article.sys.id && 
-                    <img onClick={handleReadOnClick} className={`share-icon`} src={share} alt="share article button"/>
+                    <img onClick={handleReadOnClick} loading='lazy' className={`share-icon`} src={share} alt="share article button"/>
                 }
                 </div>
                 {articleOpenID === article.sys.id ?
