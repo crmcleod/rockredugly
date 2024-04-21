@@ -255,7 +255,7 @@ button:hover {
   font-weight: 600;
   transition: 0.2s ease all;
   box-sizing: content-box;
-  width: 95%;
+  max-width: 95%;
   word-wrap: break-word;
 
 }
